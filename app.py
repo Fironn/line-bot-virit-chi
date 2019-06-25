@@ -1,14 +1,7 @@
 from flask import Flask, request, abort
-
-from linebot import (
-    LineBotApi, WebhookHandler
-)
-from linebot.exceptions import (
-    InvalidSignatureError
-)
-from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,
-)
+from linebot import LineBotApi, WebhookHandler
+from linebot.exceptions import InvalidSignatureError
+from linebot.models import MessageEvent, TextMessage, TextSendMessage
 import json
 import toHiragana
 
@@ -20,17 +13,17 @@ f.close()
 
 LINE_CHANNEL_ACCESS_TOKEN = codeData["Access-Token"]
 LINE_CHANNEL_SECRET=codeData["Access-Secret"]
-app = Flask(__name__)
 
-line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
+api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
+
+app = Flask(__name__)
 
 langList = ['ja','ko','zh-cn']
 
-#追加した部分
 @app.route("/")
 def hello_world():
-    return "hello world!"
+    return "hello world"
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -46,16 +39,14 @@ def callback():
         handler.handle(body, signature)
     except InvalidSignatureError:
         abort(400)
-
     return 'OK'
-
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     if(toHiragana.reqLang(event.message.text) in langList):
         res=toHiragana.toHiragana(event.message.text)
         if(res!=event.message.text.strip().strip(' ')):
-            line_bot_api.reply_message(
+            api.reply_message(
                 event.reply_token,
                 TextSendMessage(text=res))
 
