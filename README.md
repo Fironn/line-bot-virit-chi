@@ -9,6 +9,7 @@ git clone https://github.com/Fironn/line-bot-virit-chi.git
 
 ```
 cd line-bot-virit-chi
+cd app
 ```
 
 ```
@@ -18,8 +19,15 @@ pip3 install goolabs
 pip3 install langdetect 
 ```
 
+## LINE Developper設定をする
+参考  <https://qiita.com/Takagenki/items/b2a67422e7226a16e2b1>
 
-`token.json` と `gooToken.json` をつくる
+
+## gooラボAPIに登録する
+参考  <https://labs.goo.ne.jp/apiusage/>
+
+
+取得したAPIキーで `token.json` と `gooToken.json` をつくる
 
 token.json
 ```
@@ -36,6 +44,11 @@ gooToken.json
     "App-Id":"YOUR_GOOLAB_APP_ID"
 }
 ```
+
+```
+python3 app.py
+```
+
 
 # Credit
 
