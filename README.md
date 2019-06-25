@@ -38,6 +38,5 @@ gooToken.json
 ```
 
 # Credit
-<http://www.goo.ne.jp/>
 
-![supported by goo](http://u.xgoo.jp/img/sgoo.png)
+![supported by goo](http://u.xgoo.jp/img/sgoo.png "<http://www.goo.ne.jp/>")
