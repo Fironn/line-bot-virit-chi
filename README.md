@@ -9,6 +9,7 @@ git clone https://github.com/Fironn/line-bot-virit-chi.git
 
 ```
 cd line-bot-virit-chi
+cd app
 ```
 
 ```
