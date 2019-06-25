@@ -45,7 +45,7 @@ def callback():
 def handle_message(event):
     if(toHiragana.reqLang(event.message.text) in langList):
         res=toHiragana.toHiragana(event.message.text)
-        if(res!=event.message.text.strip().strip(' ')):
+        if(res.strip().replace(" ", "").replace("\u3000", "")!=event.message.text.strip().replace(" ", "").replace("\u3000", "")):
             api.reply_message(
                 event.reply_token,
                 TextSendMessage(text=res))

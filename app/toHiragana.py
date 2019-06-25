@@ -19,7 +19,7 @@ def toHiragana(sentence):
        output_type="hiragana" # hiragana or katakana
     )
     print(res)
-    return res["converted"].strip(' ').strip(' ')
+    return res["converted"].strip(' ').strip(' ').strip('\u3000')
 
 def reqLang(sentence):
     lang = detect(sentence)
