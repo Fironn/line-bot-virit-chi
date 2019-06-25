@@ -26,7 +26,7 @@ pip3 install langdetect
 参考  <https://labs.goo.ne.jp/apiusage/>
 
 
-`token.json` と `gooToken.json` をつくる
+取得したAPIキーで `token.json` と `gooToken.json` をつくる
 
 token.json
 ```
