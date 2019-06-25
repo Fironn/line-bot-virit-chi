@@ -10,6 +10,7 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
 )
 import json
+import toHiragana
 
 codeUrl="token.json"
 f = open(codeUrl, 'r')
@@ -23,6 +24,8 @@ app = Flask(__name__)
 
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
+
+langList = ['ja','ko','zh-cn']
 
 #追加した部分
 @app.route("/")
@@ -49,10 +52,12 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=event.message.text))
-
+    if(toHiragana.reqLang(event.message.text) in langList):
+        res=toHiragana.toHiragana(event.message.text)
+        if(res!=event.message.text.strip().strip(' ')):
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text=res))
 
 if __name__ == "__main__":
     app.run()
