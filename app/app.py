@@ -4,6 +4,9 @@ from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 import json
 import toHiragana
+import wordNet
+from translate_text import tran
+import json
 
 codeUrl="token.json"
 f = open(codeUrl, 'r')
@@ -43,7 +46,52 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    if(toHiragana.reqLang(event.message.text) in langList):
+    if(event.message.text.strip().replace(" ", "").replace("\u3000", "")[0]=='-' and event.message.text.strip().replace(" ", "").replace("\u3000", "")[1]=='s'):
+        word=event.message.text.replace("-s ", "")
+        wordList=word.split()
+        for w in wordList:
+            synonym = wordNet.getSynonym(w)
+            # print(synonym)
+            res=w+' : '
+            for s in synonym:
+                res+=synonym[s][1]+'('+toHiragana.toHiragana(synonym[s][1])+') '
+            api.reply_message(
+                event.reply_token,
+                TextSendMessage(text=res))
+    if(event.message.text.strip().replace(" ", "").replace("\u3000", "")[0]=='-' and event.message.text.strip().replace(" ", "").replace("\u3000", "")[1]=='m'):
+        word=event.message.text.replace("-m ", "")
+        wordList=word.split()
+        for w in wordList:
+            synonym = wordNet.getSynonym(w)
+            # print(synonym)
+            res=w+' : '
+            res+='\n\n'
+            i=0
+            for s in synonym:
+                res+='['+str(i+1)+']'
+                res+=synonym[s][0]+'\n('+toHiragana.toHiragana(synonym[s][0])+')\n\n'
+                i=i+1
+            # print(res)
+            api.reply_message(
+                event.reply_token,
+                TextSendMessage(text=res))
+    elif(event.message.text.strip().replace(" ", "").replace("\u3000", "")[0]=='-' and event.message.text.strip().replace(" ", "").replace("\u3000", "")[1]=='h'):
+        res='''日本語の文をひらがな変換して返します。
+:option
+-h help
+-s [word][] synonym
+-m [word][] definition
+-t [sentense] translate to Thai'''
+        api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=res))
+    elif(event.message.text.strip().replace(" ", "").replace("\u3000", "")[0]=='-' and event.message.text.strip().replace(" ", "").replace("\u3000", "")[1]=='t'):
+        res=tran(event.message.text.replace("-t ", ""))[0]
+        if(res['translations'][0]):
+            api.reply_message(
+                event.reply_token,
+                TextSendMessage(text=res['translations'][0]['text']))
+    elif(toHiragana.reqLang(event.message.text) in langList):
         res=toHiragana.toHiragana(event.message.text)
         if(res.strip().replace(" ", "").replace("\u3000", "")!=event.message.text.strip().replace(" ", "").replace("\u3000", "")):
             api.reply_message(
