@@ -49,22 +49,24 @@ def handle_message(event):
     if(event.message.text.strip().replace(" ", "").replace("\u3000", "")[0]=='-' and event.message.text.strip().replace(" ", "").replace("\u3000", "")[1]=='s'):
         word=event.message.text.replace("-s ", "")
         wordList=word.split()
+        res=''
         for w in wordList:
             synonym = wordNet.getSynonym(w)
             # print(synonym)
-            res=w+' : '
+            res+=w+' : '
             for s in synonym:
                 res+=synonym[s][1]+'('+toHiragana.toHiragana(synonym[s][1])+') '
-            api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=res))
+            res+='\n'
+        api.reply_message( event.reply_token, TextSendMessage(text=res))
+
     if(event.message.text.strip().replace(" ", "").replace("\u3000", "")[0]=='-' and event.message.text.strip().replace(" ", "").replace("\u3000", "")[1]=='m'):
         word=event.message.text.replace("-m ", "")
         wordList=word.split()
+        res=''
         for w in wordList:
             synonym = wordNet.getSynonym(w)
             # print(synonym)
-            res=w+' : '
+            res+=w+' : '
             res+='\n\n'
             i=0
             for s in synonym:
@@ -72,9 +74,9 @@ def handle_message(event):
                 res+=synonym[s][0]+'\n('+toHiragana.toHiragana(synonym[s][0])+')\n\n'
                 i=i+1
             # print(res)
-            api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=res))
+            res+='\n'
+        api.reply_message( event.reply_token, TextSendMessage(text=res))
+
     elif(event.message.text.strip().replace(" ", "").replace("\u3000", "")[0]=='-' and event.message.text.strip().replace(" ", "").replace("\u3000", "")[1]=='h'):
         res='''日本語の文をひらがな変換して返します。
 :option
