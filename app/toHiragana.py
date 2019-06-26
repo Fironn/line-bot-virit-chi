@@ -18,11 +18,11 @@ def toHiragana(sentence):
        sentence=sentence,
        output_type="hiragana" # hiragana or katakana
     )
-    print(res)
+    # print(res)
     return res["converted"]
 
 def reqLang(sentence):
     lang = detect(sentence)
-    print(lang)
+    # print(lang)
     return lang
 
