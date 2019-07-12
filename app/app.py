@@ -1,3 +1,7 @@
+#!/usr/local/bin/python3
+# -*- coding: utf-8 -*-
+print('Content-type: text/html; charset=UTF-8\n')
+
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -24,9 +28,24 @@ app = Flask(__name__)
 
 langList = ['ja','ko','zh-cn']
 
-@app.route("/")
-def hello_world():
-    return "hello world"
+
+
+@app.route('/')
+def index():
+    return "index page"
+ 
+@app.route('/hello')
+def hello():
+    return "Hello, World!"
+ 
+# if __name__=='__main__':
+#     CGIHandler().run(app)
+#     DEBUG = os.path.exists(os.path.expanduser('~/debug'))
+#     if DEBUG:
+#         run(host='localhost', port=8080, debug=True)
+#     else:
+#         run(host='0.0.0.0', port=80, server="cgi")			
+
 
 @app.route("/callback", methods=['POST'])
 def callback():
