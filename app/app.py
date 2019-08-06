@@ -97,11 +97,11 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(text=res))
     elif(event.message.text.strip().replace(" ", "").replace("\u3000", "")[0]=='-' and event.message.text.strip().replace(" ", "").replace("\u3000", "")[1]=='t'):
-        res=tran(event.message.text.replace("-t ", ""))[0]
+        res=tran(event.message.text.replace("-t ", ""))
         if(res):
             api.reply_message(
                 event.reply_token,
-                TextSendMessage(text=res['translations'][0]['text']))
+                TextSendMessage(text=res))
     elif(toHiragana.reqLang(event.message.text) in langList):
         res=toHiragana.toHiragana(event.message.text)
         if(res.strip().replace(" ", "").replace("\u3000", "")!=event.message.text.strip().replace(" ", "").replace("\u3000", "")):
