@@ -55,3 +55,7 @@ python3 app.py
 supported by goo
 
 [<img src="http://u.xgoo.jp/img/sgoo.png" width="110px">](http://www.goo.ne.jp/)
+
+
+# 追記
+[V2.0] azureのTranslationAPIからGoogle Translateスクレイピングに変更しました
