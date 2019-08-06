@@ -9,8 +9,7 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage
 import json
 import toHiragana
 import wordNet
-from translate_text import tran
-import json
+from translate_text_sc import tran
 
 codeUrl="token.json"
 f = open(codeUrl, 'r')
@@ -108,7 +107,7 @@ def handle_message(event):
             TextSendMessage(text=res))
     elif(event.message.text.strip().replace(" ", "").replace("\u3000", "")[0]=='-' and event.message.text.strip().replace(" ", "").replace("\u3000", "")[1]=='t'):
         res=tran(event.message.text.replace("-t ", ""))[0]
-        if(res['translations'][0]):
+        if(res):
             api.reply_message(
                 event.reply_token,
                 TextSendMessage(text=res['translations'][0]['text']))
