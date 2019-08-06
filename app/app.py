@@ -35,16 +35,7 @@ def index():
  
 @app.route('/hello')
 def hello():
-    return "Hello, World!"
- 
-# if __name__=='__main__':
-#     CGIHandler().run(app)
-#     DEBUG = os.path.exists(os.path.expanduser('~/debug'))
-#     if DEBUG:
-#         run(host='localhost', port=8080, debug=True)
-#     else:
-#         run(host='0.0.0.0', port=80, server="cgi")			
-
+    return "Hello, World!"		
 
 @app.route("/callback", methods=['POST'])
 def callback():
