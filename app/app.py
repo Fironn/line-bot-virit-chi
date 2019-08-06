@@ -1,3 +1,7 @@
+#!/usr/local/bin/python3
+# -*- coding: utf-8 -*-
+print('Content-type: text/html; charset=UTF-8\n')
+
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -5,8 +9,7 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage
 import json
 import toHiragana
 import wordNet
-from translate_text import tran
-import json
+from translate_text_sc import tran
 
 codeUrl="token.json"
 f = open(codeUrl, 'r')
@@ -24,9 +27,15 @@ app = Flask(__name__)
 
 langList = ['ja','ko','zh-cn']
 
-@app.route("/")
-def hello_world():
-    return "hello world"
+
+
+@app.route('/')
+def index():
+    return "index page"
+ 
+@app.route('/hello')
+def hello():
+    return "Hello, World!"		
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -49,22 +58,24 @@ def handle_message(event):
     if(event.message.text.strip().replace(" ", "").replace("\u3000", "")[0]=='-' and event.message.text.strip().replace(" ", "").replace("\u3000", "")[1]=='s'):
         word=event.message.text.replace("-s ", "")
         wordList=word.split()
+        res=''
         for w in wordList:
             synonym = wordNet.getSynonym(w)
             # print(synonym)
-            res=w+' : '
+            res+=w+' : '
             for s in synonym:
                 res+=synonym[s][1]+'('+toHiragana.toHiragana(synonym[s][1])+') '
-            api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=res))
+            res+='\n'
+        api.reply_message( event.reply_token, TextSendMessage(text=res))
+
     if(event.message.text.strip().replace(" ", "").replace("\u3000", "")[0]=='-' and event.message.text.strip().replace(" ", "").replace("\u3000", "")[1]=='m'):
         word=event.message.text.replace("-m ", "")
         wordList=word.split()
+        res=''
         for w in wordList:
             synonym = wordNet.getSynonym(w)
             # print(synonym)
-            res=w+' : '
+            res+=w+' : '
             res+='\n\n'
             i=0
             for s in synonym:
@@ -72,9 +83,9 @@ def handle_message(event):
                 res+=synonym[s][0]+'\n('+toHiragana.toHiragana(synonym[s][0])+')\n\n'
                 i=i+1
             # print(res)
-            api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=res))
+            res+='\n'
+        api.reply_message( event.reply_token, TextSendMessage(text=res))
+
     elif(event.message.text.strip().replace(" ", "").replace("\u3000", "")[0]=='-' and event.message.text.strip().replace(" ", "").replace("\u3000", "")[1]=='h'):
         res='''日本語の文をひらがな変換して返します。
 :option
@@ -87,7 +98,7 @@ def handle_message(event):
             TextSendMessage(text=res))
     elif(event.message.text.strip().replace(" ", "").replace("\u3000", "")[0]=='-' and event.message.text.strip().replace(" ", "").replace("\u3000", "")[1]=='t'):
         res=tran(event.message.text.replace("-t ", ""))[0]
-        if(res['translations'][0]):
+        if(res):
             api.reply_message(
                 event.reply_token,
                 TextSendMessage(text=res['translations'][0]['text']))
